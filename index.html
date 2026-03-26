@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MECHISSM 2K26 | SSMIET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg-dark: #020617; --primary: #22d3ee; --accent: #f97316; --gold: #f59e0b; }
+        body.loading { overflow: hidden; }
+        body { background-color: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+        /* --- LOADER --- */
+        #loader-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #020617; z-index: 99999; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .loader-hide { opacity: 0; pointer-events: none; visibility: hidden; }
+
+        .glitch-text {
+            font-size: 8vw; font-weight: 900; font-family: 'Orbitron';
+            color: white; position: relative;
+            text-shadow: 0.05em 0 0 var(--primary), -0.05em -0.025em 0 var(--accent);
+            animation: glitch 500ms infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--primary), -0.05em -0.025em 0 var(--accent); }
+            50% { text-shadow: -0.05em -0.025em 0 var(--primary), 0.05em 0.025em 0 var(--accent); }
+            100% { text-shadow: 0.025em 0.05em 0 var(--primary), 0.05em 0 0 var(--accent); }
+        }
+
+        #load-progress { width: 0%; height: 2px; background: var(--primary); box-shadow: 0 0 15px var(--primary); transition: width 0.2s; }
+
+        /* PRIZE DESIGN */
+        .prize-hero-card {
+            background: linear-gradient(45deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+            border: 2px solid var(--gold);
+            animation: pulse-gold 2s infinite alternate;
+        }
+        @keyframes pulse-gold { from { transform: scale(1); } to { transform: scale(1.05); } }
+
+        .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .glass-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        
+        .desc-content { display: none; margin-top: 12px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; }
+    </style>
+</head>
+<body class="loading">
+
+    <div id="loader-overlay">
+        <div class="glitch-text">MECHISSM 2K26</div>
+        <div class="w-64 h-0.5 bg-white/10 mt-5"><div id="load-progress"></div></div>
+        <div id="load-percentage" class="font-orbitron text-cyan-400 mt-2 text-xl">0%</div>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header class="p-4 text-center border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-md z-50">
+        <h2 class="text-[10px] md:text-xs font-bold tracking-widest text-cyan-400 uppercase font-orbitron">SSM Institute of Engineering and Technology (Autonomous), Dindigul</h2>
+    </header>
+
+    <main id="main-content" class="max-w-7xl mx-auto px-4 opacity-0 transition-opacity duration-1000">
+        
+        <section class="min-h-screen flex flex-col items-center justify-center text-center py-20">
+            <h3 class="text-orange-500 font-bold tracking-[0.2em] mb-4 uppercase">DEPARTMENT OF MECHANICAL ENGINEERING</h3>
+            <h1 class="text-6xl md:text-9xl font-black font-orbitron text-white mb-2">MECHISSM</h1>
+            <h2 class="text-3xl md:text-5xl font-orbitron text-white/80 mb-8 tracking-[0.3em]">2K26</h2>
+
+            <div class="flex flex-col items-center gap-4 mb-12">
+                <div class="prize-hero-card px-10 py-4 rounded-2xl flex flex-col items-center">
+                    <i class="fas fa-trophy text-amber-400 text-4xl mb-2"></i>
+                    <span class="font-orbitron font-black text-3xl text-white tracking-widest uppercase">CASH PRIZE ₹25,000</span>
+                </div>
+                <div class="bg-cyan-500/10 border border-cyan-400/30 px-6 py-2 rounded-full flex items-center gap-3">
+                    <i class="fas fa-award text-cyan-400"></i>
+                    <span class="font-orbitron font-bold text-cyan-400 text-sm tracking-widest uppercase">Participation Certificate Provided</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-4 md:gap-10 mb-12 font-orbitron">
+                <div class="glass-card p-4 rounded-xl min-w-[70px]"><span id="days" class="text-2xl md:text-4xl font-bold text-orange-500">00</span><br><span class="text-[10px] text-gray-400 uppercase">Days</span></div>
+                <div class="glass-card p-4 rounded-xl min-w-[70px]"><span id="hours" class="text-2xl md:text-4xl font-bold text-orange-500">00</span><br><span class="text-[10px] text-gray-400 uppercase">Hrs</span></div>
+                <div class="glass-card p-4 rounded-xl min-w-[70px]"><span id="mins" class="text-2xl md:text-4xl font-bold text-orange-500">00</span><br><span class="text-[10px] text-gray-400 uppercase">Min</span></div>
+                <div class="glass-card p-4 rounded-xl min-w-[70px]"><span id="secs" class="text-2xl md:text-4xl font-bold text-orange-500">00</span><br><span class="text-[10px] text-gray-400 uppercase">Sec</span></div>
+            </div>
+
+            <div class="text-lg md:text-xl text-white font-bold mb-4 uppercase border-y border-white/10 py-2 font-orbitron tracking-tighter">DATE: 10.04.2026 | TIME: 9:30 AM TO 4:45 PM</div>
+        </section>
+
+        <section class="py-10">
+            <h3 class="text-4xl font-orbitron mb-8 border-l-4 border-cyan-400 pl-4 text-white uppercase">Workshop</h3>
+            <div class="glass-card p-8 rounded-2xl border-2 border-orange-500/30">
+                <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-cube text-5xl text-orange-500"></i>
+                        <div>
+                            <h4 class="text-2xl md:text-4xl font-bold text-white uppercase font-orbitron">WORKSHOP ON 3D PRINTING</h4>
+                            <p class="text-orange-500 font-orbitron tracking-widest mt-1 uppercase">Anyone Can Print (Hands on)</p>
+                        </div>
+                    </div>
+                    <span class="bg-red-600 px-6 py-2 rounded-full text-xs font-bold shadow-lg w-fit uppercase tracking-wider">Limited Seats (30 Nos)</span>
+                </div>
+                <p class="mt-6 text-gray-400 border-t border-white/10 pt-4 font-medium">Professional training on FDM technology, slicing software, and printer operation.</p>
+            </div>
+        </section>
+
+        <section class="py-10">
+            <h3 class="text-4xl font-orbitron mb-8 border-l-4 border-orange-500 pl-4 text-white uppercase">Technical Events</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('t1')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-ruler-combined mr-3 text-orange-500"></i>CAD</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="t1" class="desc-content font-medium">Precision drafting and 3D modeling challenge. Show your speed and accuracy.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('t2')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-file-invoice mr-3 text-orange-500"></i>PAPER PRESENTATION</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="t2" class="desc-content font-medium">Present research and innovation in Mechanical domains.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('t3')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-microchip mr-3 text-orange-500"></i>PROJECT EXPO</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="t3" class="desc-content font-medium">Exhibit prototypes. Judges focus on innovation and complexity.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('t4')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-lightbulb mr-3 text-orange-500"></i>TECHNICAL QUIZ</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="t4" class="desc-content font-medium">Test of engineering fundamentals and current trends.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-10">
+            <h3 class="text-4xl font-orbitron mb-8 border-l-4 border-pink-500 pl-4 text-white uppercase">Non Technical Events</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('nt1')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-laugh mr-3 text-pink-500"></i>MEME CREATION</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="nt1" class="desc-content font-medium">Create relatable and funny engineering-themed memes.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('nt2')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-film mr-3 text-pink-500"></i>CINEMATIC QUIZ</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="nt2" class="desc-content font-medium">Quiz based on cinema history, scenes, and directors.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('nt3')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-camera mr-3 text-pink-500"></i>THEME PHOTOGRAPHY</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="nt3" class="desc-content font-medium">Aesthetics and storytelling through photography.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl cursor-pointer" onclick="toggleDesc('nt4')">
+                    <h4 class="text-xl font-bold uppercase flex items-center justify-between">
+                        <span><i class="fas fa-microphone-lines mr-3 text-pink-500"></i>JAM (JUST A MINUTE)</span> <i class="fas fa-chevron-down text-sm"></i>
+                    </h4>
+                    <p id="nt4" class="desc-content font-medium">Speak on a given topic fluently for 60 seconds.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 border-t border-white/5 mt-10 text-center">
+            <h3 class="text-4xl font-orbitron mb-10 text-white uppercase tracking-widest">Registration Details</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-2xl">
+                    <p class="text-gray-400 text-xs mb-2 uppercase tracking-widest">Events Fee</p>
+                    <div class="text-4xl font-bold text-cyan-400 font-orbitron">₹200</div>
+                </div>
+                <div class="glass-card p-8 rounded-2xl border border-red-500/30">
+                    <p class="text-gray-400 text-xs mb-2 uppercase tracking-widest">Spot Registration</p>
+                    <div class="text-4xl font-bold text-red-500 font-orbitron">₹250</div>
+                </div>
+                <div class="glass-card p-8 rounded-2xl border border-orange-500/30">
+                    <p class="text-gray-400 text-xs mb-2 uppercase tracking-widest">Workshop Fee</p>
+                    <div class="text-4xl font-bold text-orange-500 font-orbitron">₹300</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 border-t border-white/5">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-6 rounded-xl border-l-4 border-orange-500">
+                    <h5 class="text-orange-500 font-bold mb-4 font-orbitron uppercase text-sm">Workshop Co-ordinators</h5>
+                    <p class="text-white font-bold uppercase">Yogaraja : 88384 09622</p>
+                    <p class="text-white font-bold uppercase mt-2">Arshath Natheem : 86681 15331</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl border-l-4 border-pink-500">
+                    <h5 class="text-pink-500 font-bold mb-4 font-orbitron uppercase text-sm">Event Co-ordinators</h5>
+                    <p class="text-white font-bold uppercase">Sampath : 86104 07590</p>
+                    <p class="text-white font-bold uppercase mt-2">Sugumar : 85248 98276</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl border-l-4 border-cyan-400">
+                    <h5 class="text-cyan-400 font-bold mb-4 font-orbitron uppercase text-sm">Overall Co-ordinators</h5>
+                    <p class="text-white font-bold uppercase">Vasanth Balaji R / Yogaraja / Kamalesh</p>
+                    <p class="text-gray-400">93427 73014 / 88384 09622 / 80720 05499</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 mt-12 pt-10 border-t border-white/5">
+                <div>
+                    <h5 class="text-cyan-400 font-bold mb-4 font-orbitron uppercase">Staff Co-ordinators</h5>
+                    <p class="text-lg uppercase font-bold">Mr. C. SILAMBARASAN | Dr. M. SELWIN</p>
+                </div>
+                <div class="md:text-right">
+                    <h5 class="text-gray-500 font-bold mb-4 font-orbitron uppercase text-sm tracking-widest">Administration</h5>
+                    <p class="text-lg uppercase">Dr. S. JOSEPH DOMINIC VIJAYAKUMAR (HOD)</p>
+                    <p class="text-lg mt-1 uppercase">Dr. D. SENTHIL KUMARAN (Principal)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 text-center">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf_X6IkNItS7EgYC6Ptqr3oD3S9mepn4xqGSajJsL0BvRtQ5Q/viewform?usp=header" target="_blank" 
+               class="bg-orange-500 text-black font-black py-5 px-16 rounded-full text-2xl font-orbitron inline-block uppercase hover:scale-105 transition-all shadow-[0_0_20px_rgba(249,115,22,0.4)]">Register Here</a>
+            
+            <div class="mt-16 flex justify-center items-center gap-10">
+                <a href="https://www.google.com/maps/dir//SSM+Institute+of+Engineering+and+Technology,+Dindigul+-+Palani+Hwy,+Sindalagundu,+Tamil+Nadu+624002/@10.392942,77.915004,15z" target="_blank" class="text-4xl text-gray-600 hover:text-cyan-400"><i class="fas fa-location-dot"></i></a>
+                <a href="https://www.instagram.com/mechissm_2k26_?igsh=MW9iNmIzdm8wM2w3Mw==" target="_blank" class="text-6xl text-gray-500 hover:text-pink-500"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:mechissm123@gmail.com" class="text-4xl text-gray-600 hover:text-orange-500"><i class="fas fa-envelope"></i></a>
+            </div>
+        </section>
+
+        <footer class="py-10 text-center border-t border-white/5 text-gray-600 text-xs tracking-[0.3em] uppercase">© 2026 MECHISSM | SSMIET Dindigul</footer>
+    </main>
+
+    <script>
+        function openSite() {
+            document.getElementById('loader-overlay').classList.add('loader-hide');
+            document.getElementById('main-content').classList.remove('opacity-0');
+            document.body.classList.remove('loading');
+        }
+
+        let loadPct = 0;
+        const intv = setInterval(() => {
+            loadPct += Math.floor(Math.random() * 25) + 5; 
+            if (loadPct >= 100) {
+                loadPct = 100;
+                clearInterval(intv);
+                setTimeout(openSite, 300);
+            }
+            document.getElementById('load-progress').style.width = loadPct + "%";
+            document.getElementById('load-percentage').innerText = loadPct + "%";
+        }, 80);
+
+        setTimeout(() => { if(loadPct < 100) openSite(); }, 5000);
+
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let pts = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+        for(let i=0; i<30; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, vx:Math.random()-0.5, vy:Math.random()-0.5});
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = 'rgba(34,211,238,0.2)';
+            pts.forEach(p => { p.x+=p.vx; p.y+=p.vy; if(p.x<0) p.x=canvas.width; if(p.x>canvas.width) p.x=0; if(p.y<0) p.y=canvas.height; if(p.y>canvas.height) p.y=0; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, 7); ctx.fill(); });
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        const target = new Date("April 10, 2026 09:30:00").getTime();
+        setInterval(() => {
+            const diff = target - new Date().getTime();
+            if(diff < 0) return;
+            document.getElementById('days').innerText = Math.floor(diff/86400000).toString().padStart(2,'0');
+            document.getElementById('hours').innerText = Math.floor((diff%86400000)/3600000).toString().padStart(2,'0');
+            document.getElementById('mins').innerText = Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
+            document.getElementById('secs').innerText = Math.floor((diff%60000)/1000).toString().padStart(2,'0');
+        }, 1000);
+
+        function toggleDesc(id) { const el = document.getElementById(id); el.style.display = (el.style.display === 'block') ? 'none' : 'block'; }
+    </script>
+</body>
+</html>
